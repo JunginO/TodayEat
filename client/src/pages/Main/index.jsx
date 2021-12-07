@@ -8,6 +8,7 @@ import { COLORS } from "../../components/Colors";
 import dfs_xy_conv from "./components/dfs_xy_conv";
 import CuteButton from "../../components/CuteButton";
 import SearchWithKeyword from "./components/SearchWithKeyword";
+import MiseMun from "./components/MiseMun";
 const { kakao } = window;
 //import { NaverMap, RenderAfterNavermapsLoaded } from "react-naver-maps";
 //import Coordinate from "./components/Coordinate";
@@ -46,11 +47,12 @@ const Main = () => {
   const [status, setStatus] = useState(null);
   const [xdata, setxData] = useState(null);
   const [ydata, setyData] = useState(null);
-
+  const [sidodata, setSidodata] = useState(null);
   const [DetailAddr, setDetailAddr] = useState(null);
   function displayCenterInfo(result, status) {
     if (status === daum.maps.services.Status.OK) {
       setDetailAddr(result[1].address_name);
+      setSidodata(result[1].region_1depth_name);
       console.log(DetailAddr);
     }
   }
@@ -117,7 +119,7 @@ const Main = () => {
   const url = `/getUltraSrtNcst?serviceKey=${serviceKey}&dataType=json&numOfRows=${numOfRows}&pageNo=${pageNo}&base_date=${CurrentDate}&base_time=${CurrentHour}&nx=${xdata}&ny=${ydata}`;
   const SetWeather = async () => {
     try {
-      const response = await axios("api" + url, {
+      const response = await axios("api/v1" + url, {
         method: "GET",
         mode: "no-cors",
         headers: {
@@ -134,33 +136,7 @@ const Main = () => {
     }
   };
   //미세먼지 여기부터
-  /*
-  const serviceKey2 = process.env.REACT_APP_Mise_API_KEY;
-  const sido = encodeURI("서울");
-  const url2 = `/getCtprvnRltmMesureDnsty?sidoName=서울&serviceKey=${serviceKey2}`;
-  const [miseapi, setMiseapi] = useState(null);
-  const SetMise = async () => {
-    try {
-      const response2 = await axios("api" + url2, {
-        method: "GET",
-        mode: "no-cors",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/xml; charset=utf-8",
-        },
-        withCredentials: true,
-        credentials: "same-origin",
-      });
 
-      setMiseapi(response2);
-      console.log(miseapi);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  useEffect(() => {
-    SetMise();
-  }, []);*/
   //여기까지
   useEffect(() => {
     SetWeather();
@@ -186,15 +162,26 @@ const Main = () => {
               <Weather category={d.category} obsrValue={d.obsrValue} />
             ))}
         </div>
+
+        <div>
+          <MiseMun sidodata={sidodata} />
+        </div>
         <div className="middle-box">추천 메뉴</div>
         <div className="food-box">
           <CuteButton title="떡볶이"></CuteButton>
           <CuteButton title="마라탕"></CuteButton>
           <CuteButton title="피자"></CuteButton>
         </div>
-
         <div>
-          <SearchWithKeyword searchPlace={searchPlace} />
+          {lng && (
+            <div>
+              <SearchWithKeyword
+                searchPlace={searchPlace}
+                lat={lat}
+                lng={lng}
+              />
+            </div>
+          )}
         </div>
       </div>
     </MainWrapper>

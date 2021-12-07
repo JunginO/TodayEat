@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from "react";
-
+import { Route, Link } from "react-router-dom";
 const { kakao } = window;
 
-const MapContainer = ({ searchPlace }) => {
+const MapContainer = ({ searchPlace, lat, lng }) => {
   const [Places, setPlaces] = useState([]);
+  console.log("제ㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔ발", lat, lng);
+
   useEffect(() => {
     var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
     var markers = [];
     const container = document.getElementById("myMap");
     const options = {
-      center: new kakao.maps.LatLng(33.450701, 126.570667),
-      level: 3,
+      center: new kakao.maps.LatLng(lat, lng),
+      level: 5,
+      size: 10,
+      page: 1,
+      location: new kakao.maps.LatLng(lat, lng),
+      radius: 1000,
+      sort: kakao.maps.services.SortBy.distance,
+      scrollwheel: false,
+      draggable: false,
     };
     const map = new kakao.maps.Map(container, options);
 
@@ -89,7 +98,7 @@ const MapContainer = ({ searchPlace }) => {
         id="myMap"
         style={{
           width: "500px",
-          height: "500px",
+          height: "400px",
         }}
       ></div>
       <div id="result-list">
@@ -97,17 +106,19 @@ const MapContainer = ({ searchPlace }) => {
           <div key={i} style={{ marginTop: "20px" }}>
             <span>{i + 1}</span>
             <div>
-              <h5>{item.place_name}</h5>
-              {item.road_address_name ? (
-                <div>
-                  <span>{item.road_address_name}</span>
-                  <span>{item.address_name}</span>
-                </div>
-              ) : (
-                <span>{item.address_name}</span>
-              )}
-              <span>{item.phone}</span>
+              <a href={"https://map.kakao.com/link/map/" + item.id}>
+                {item.place_name}
+              </a>
             </div>
+            {item.road_address_name ? (
+              <div>
+                <span>{item.road_address_name}</span>
+                <span>{item.address_name}</span>
+              </div>
+            ) : (
+              <span>{item.address_name}</span>
+            )}
+            <span>{item.phone}</span>
           </div>
         ))}
         <div id="pagination"></div>
