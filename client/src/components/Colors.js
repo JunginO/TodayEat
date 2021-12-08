@@ -1,6 +1,6 @@
 export const COLORS = {
   yellow: "#e7c816",
-  deepYellow: "#eb920d",
-  pressedYellow: "#aa6a0a",
+  deepYellow: "#e9bf06",
+  pressedYellow: "#c4a106",
   mainfont: "#ffffff",
 };

@@ -1,10 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { Route, Link } from "react-router-dom";
 const { kakao } = window;
+import styled from "styled-components";
+import { COLORS } from "../../../components/Colors";
+const List = styled.div`
+  .num {
+    font-size: 25px;
+    font-weight: 600;
+    margin: 8px;
+    align-self: center;
+  }
+  .large-box {
+  }
+  .medium-box {
+    justify-content: flex-start;
+    display: flex;
+    border: 2px solid ${COLORS.yellow};
+    padding: 5px;
+    border-radius: 5px;
+  }
 
+  .small-box {
+    text-align: left;
+  }
+  .hide {
+    display: none;
+  }
+`;
 const MapContainer = ({ searchPlace, lat, lng }) => {
   const [Places, setPlaces] = useState([]);
-  console.log("제ㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔ발", lat, lng);
 
   useEffect(() => {
     var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
@@ -18,7 +42,6 @@ const MapContainer = ({ searchPlace, lat, lng }) => {
       location: new kakao.maps.LatLng(lat, lng),
       radius: 1000,
       sort: kakao.maps.services.SortBy.distance,
-      scrollwheel: false,
       draggable: false,
     };
     const map = new kakao.maps.Map(container, options);
@@ -90,10 +113,9 @@ const MapContainer = ({ searchPlace, lat, lng }) => {
       });
     }
   }, [searchPlace]);
-  // 검색결과 배열에 담아줌
 
   return (
-    <div>
+    <List>
       <div
         id="myMap"
         style={{
@@ -101,29 +123,32 @@ const MapContainer = ({ searchPlace, lat, lng }) => {
           height: "400px",
         }}
       ></div>
-      <div id="result-list">
+      <div id="large-box">
         {Places.map((item, i) => (
-          <div key={i} style={{ marginTop: "20px" }}>
-            <span>{i + 1}</span>
-            <div>
-              <a href={"https://map.kakao.com/link/map/" + item.id}>
-                {item.place_name}
-              </a>
-            </div>
-            {item.road_address_name ? (
+          <div className="medium-box" key={i} style={{ marginTop: "20px" }}>
+            <span className="num">{i + 1}</span>
+            <div className="small-box">
               <div>
-                <span>{item.road_address_name}</span>
-                <span>{item.address_name}</span>
+                <a href={"https://map.kakao.com/link/map/" + item.id}>
+                  {item.place_name}
+                </a>
               </div>
-            ) : (
-              <span>{item.address_name}</span>
-            )}
-            <span>{item.phone}</span>
+              {item.road_address_name ? (
+                <div>
+                  <span>{item.road_address_name}</span>
+                  <span>{item.address_name}</span>
+                </div>
+              ) : (
+                <span>{item.address_name}</span>
+              )}
+              <span>{item.phone}</span>
+            </div>
           </div>
         ))}
-        <div id="pagination"></div>
+
+        <div id="pagination" className="hide"></div>
       </div>
-    </div>
+    </List>
   );
 };
 

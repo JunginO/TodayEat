@@ -7,8 +7,8 @@ import Weather from "./components/Weather";
 import { COLORS } from "../../components/Colors";
 import dfs_xy_conv from "./components/dfs_xy_conv";
 import CuteButton from "../../components/CuteButton";
-import SearchWithKeyword from "./components/SearchWithKeyword";
 import MiseMun from "./components/MiseMun";
+import { Link, useNavigate } from "react-router-dom";
 const { kakao } = window;
 //import { NaverMap, RenderAfterNavermapsLoaded } from "react-naver-maps";
 //import Coordinate from "./components/Coordinate";
@@ -39,6 +39,10 @@ const MainWrapper = styled.div`
     margin: 10px;
     text-align: center;
   }
+  .non-display-box {
+    margin: 10px;
+    text-align: center;
+  }
 `;
 
 const Main = () => {
@@ -48,11 +52,13 @@ const Main = () => {
   const [xdata, setxData] = useState(null);
   const [ydata, setyData] = useState(null);
   const [sidodata, setSidodata] = useState(null);
+  const [gudata, setGudata] = useState(null);
   const [DetailAddr, setDetailAddr] = useState(null);
   function displayCenterInfo(result, status) {
     if (status === daum.maps.services.Status.OK) {
       setDetailAddr(result[1].address_name);
       setSidodata(result[1].region_1depth_name);
+      setGudata(result[1].region_3depth_name);
       console.log(DetailAddr);
     }
   }
@@ -142,8 +148,6 @@ const Main = () => {
     SetWeather();
   }, [ydata]);
 
-  const [searchPlace, setSearchPlace] = useState("공릉동 떡볶이");
-
   return (
     <MainWrapper>
       <div>
@@ -166,22 +170,11 @@ const Main = () => {
         <div>
           <MiseMun sidodata={sidodata} />
         </div>
-        <div className="middle-box">추천 메뉴</div>
-        <div className="food-box">
-          <CuteButton title="떡볶이"></CuteButton>
-          <CuteButton title="마라탕"></CuteButton>
-          <CuteButton title="피자"></CuteButton>
-        </div>
-        <div>
-          {lng && (
-            <div>
-              <SearchWithKeyword
-                searchPlace={searchPlace}
-                lat={lat}
-                lng={lng}
-              />
-            </div>
-          )}
+
+        <div className="non-display-box">
+          <Link to={"/show"} state={{ gudata: gudata, lat: lat, lng: lng }}>
+            <CuteButton title="추천메뉴"></CuteButton>
+          </Link>
         </div>
       </div>
     </MainWrapper>
