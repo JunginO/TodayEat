@@ -3,7 +3,7 @@ const app = express();
 const router = express.Router();
 const passport = require("passport");
 
-const { isLoggedIn, isNotLoggedIn } = require("../middleware");
+const { isLoggendIn, inNotLoggedIn } = require("../middleware");
 const userService = require("../services/user");
 
 router.get("/", async (req, res) => {
@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", isNotLoggedIn, async (req, res, next) => {
+router.post("/", inNotLoggedIn, async (req, res, next) => {
   passport.authenticate("local-join", (err, user) => {
     if (err) {
       return res.status(400).json(err);
@@ -41,7 +41,8 @@ router.post("/", isNotLoggedIn, async (req, res, next) => {
   })(req, res, next);
 });
 
-router.put("/", isLoggedIn, async (req, res) => {
+
+router.put("/", isLoggendIn, async (req, res) => {
   const { nickname } = req.body;
 
   const result = await userService.updateUser(req.user.id, nickname);
@@ -57,7 +58,7 @@ router.put("/", isLoggedIn, async (req, res) => {
   }
 });
 
-router.delete("/", isLoggedIn, async (req, res) => {
+router.delete("/", isLoggendIn, async (req, res) => {
   const result = await userService.deleteUser(req.user.id);
 
   if (result) {
@@ -74,7 +75,7 @@ router.delete("/", isLoggedIn, async (req, res) => {
   }
 });
 
-router.post("/login", isNotLoggedIn, async (req, res, next) => {
+router.post("/login", inNotLoggedIn, async (req, res, next) => {
   passport.authenticate("local-login", (err, user) => {
     if (err) {
       return res.status(400).json(err);
@@ -99,7 +100,7 @@ router.post("/login", isNotLoggedIn, async (req, res, next) => {
   })(req, res, next);
 });
 
-router.get("/logout", isLoggedIn, async (req, res) => {
+router.get("/logout", isLoggendIn, async (req, res) => {
   req.logout();
   req.session.destroy();
   return res.status(200).json({
