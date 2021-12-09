@@ -19,7 +19,7 @@ const LoginButton = () => {
   };
   return localStorage.getItem("logged-in") ? (
     <div>
-      <BorderedButton to="/" onClick={setData}>
+      <BorderedButton to="/mypage">
         {JSON.parse(id)}님, 환영합니다!
       </BorderedButton>
     </div>

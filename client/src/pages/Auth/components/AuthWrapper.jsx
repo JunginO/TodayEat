@@ -10,6 +10,7 @@ const PositionCenter = styled.div`
 `;
 const MainBox = styled.div`
   width: 500px;
+  border: 2px solid ${COLORS.yellow};
 `;
 
 const LogoWrapper = styled.div`

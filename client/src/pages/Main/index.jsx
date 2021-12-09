@@ -143,9 +143,7 @@ const Main = () => {
       console.log(e);
     }
   };
-  //미세먼지 여기부터
 
-  //여기까지
   useEffect(() => {
     SetWeather();
   }, [ydata]);
@@ -182,7 +180,7 @@ const Main = () => {
             to={"/show"}
             state={{ gudata: gudata, lat: lat, lng: lng, WCode: WCode }}
           >
-            <CuteButton title="추천메뉴"></CuteButton>
+            <CuteButton title="오늘의 랜덤추천메뉴"></CuteButton>
           </Link>
         </div>
       </div>
