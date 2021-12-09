@@ -1,7 +1,6 @@
 const Op = require("sequelize").Op;
 
 const { User, EmailAuth } = require("../models/index");
-const common = require("./common");
 
 exports.getUser = async (userId) => {
   return await User.findOne({
