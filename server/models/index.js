@@ -34,4 +34,13 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+db.User = require("./User")(sequelize, Sequelize);
+db.Food = require("./Food")(sequelize, Sequelize);
+db.Cart = require("./Cart")(sequelize, Sequelize);
+
+db.Cart = require(db.User, {foreignKey: "user_id"});
+db.Cart = require(db.Food, {foreignKey: "category"});
+db.Cart = require(db.Food, {foreignKey: "food_name"});
+
+
 module.exports = db;
