@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const app = express();
+
+const user = require("./user");
+
+
 const request = require("request");
 const cheerio = require("cheerio");
 
@@ -22,5 +26,7 @@ router.get("/", function (req, res, next) {
     console.log(obj); // 콘솔창에 찍어보기
   });
 });
+
+router.use("/user", user);
 
 module.exports = router;
