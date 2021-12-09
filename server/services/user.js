@@ -4,12 +4,7 @@ const { User, EmailAuth } = require("../models/index");
 
 exports.getUser = async (userId) => {
   return await User.findOne({
-    attributes: [
-      "user_id",
-      "email",
-      "name",
-      "nickname",
-    ],
+    attributes: ["user_id", "email", "name", "nickname"],
     where: {
       id: userId,
     },

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 const TopWrapper = styled.div`
   .top-back {
     background-color: lightgray;
@@ -52,9 +53,11 @@ const TopWrapper = styled.div`
     }
   }
 `;
+const navigate = useNavigate;
 const logoutevent = (e) => {
   localStorage.removeItem("key");
   localStorage.clear();
+  navigate("/");
 };
 const index = () => {
   let id = window.localStorage.getItem("userId");

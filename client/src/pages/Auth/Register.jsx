@@ -5,6 +5,7 @@ import { AuthButton } from ".";
 import { AuthWrapper } from ".";
 import { AuthContent } from ".";
 import { InputWithLabel } from ".";
+import axios from "axios";
 const RegisterWrapper = styled.div`
   .alert {
     font-size: 12px;
@@ -13,11 +14,12 @@ const RegisterWrapper = styled.div`
   }
 `;
 const Register = () => {
-  const [id, setId] = useState("");
+  const [userId, setId] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
   const [email, setEmail] = useState("");
-
+  const [nickname, setNickname] = useState("");
+  const [name, setName] = useState("");
   const [pwError, setpwError] = useState(0);
   const [pwReError, setpwReError] = useState(0);
   const [errorMail, setErrorMail] = useState(0);
@@ -65,16 +67,52 @@ const Register = () => {
     setEmail(value);
   };
 
+  const onClickSignup = async () => {
+    if (errorMail + pwError + pwReError !== 0) {
+      alert("회원정보를 제대로 입력해주세요.");
+    } else {
+      const result = await axios({
+        method: "POST",
+        url: "http://localhost:5000/api/user",
+        data: {
+          user_id: userId,
+          password: password,
+          name: name,
+          email: email,
+          nickname: nickname,
+        },
+      });
+      if (result) {
+        if (result.data.success) {
+          window.location.replace("/auth/login");
+        } else {
+          setIsOpen(true);
+          setErrorText(result.data.message);
+        }
+      } else {
+        setErrorText("bad reqeust");
+        setIsOpen(true);
+      }
+    }
+  };
+  const onChangeName = (e) => {
+    setName(e.target.value);
+  };
+
+  const onChangeNickname = (e) => {
+    setNickname(e.target.value);
+  };
+
   return (
     <RegisterWrapper>
       <AuthWrapper>
         <AuthContent title="회원가입">
           <InputWithLabel
             label="아이디"
-            name="username"
+            name="userId"
             placeholder="아이디"
             type="text"
-            value={id}
+            value={userId}
             onChange={onChangeId}
           />
           <InputWithLabel
@@ -99,12 +137,14 @@ const Register = () => {
             label="이름"
             name="name"
             placeholder="이름"
+            onChange={onChangeName}
             type="name"
           />
           <InputWithLabel
             label="닉네임"
             name="nickname"
             placeholder="닉네임"
+            onChange={onChangeNickname}
             type="nickname"
           />
           <InputWithLabel
@@ -114,11 +154,11 @@ const Register = () => {
             type="email"
             value={email}
             onChange={onChangeEmail}
-          />{" "}
+          />
           {errorMail === 1 && (
             <p className="alert">메일 형식이 맞지 않습니다</p>
           )}
-          <AuthButton>회원가입</AuthButton>
+          <AuthButton onClick={onClickSignup}>회원가입</AuthButton>
         </AuthContent>
       </AuthWrapper>
     </RegisterWrapper>

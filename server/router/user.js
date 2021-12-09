@@ -23,7 +23,7 @@ router.get("/", async (req, res) => {
       return res.status(400).send({
         success: false,
         data: {},
-        message: "server error",
+        message: "server error ->get",
       });
     }
   }
@@ -32,15 +32,20 @@ router.get("/", async (req, res) => {
 router.post("/", inNotLoggedIn, async (req, res, next) => {
   passport.authenticate("local-join", (err, user) => {
     if (err) {
-      return res.status(400).json(err);
+      return res.status(400).send({
+        success: false,
+        data: {},
+        message: "server error -> post",
+      });
     }
     if (!user) {
-      return res.status(200).send({ success: false, message: "이미 가입된 아이디입니다." });
+      return res
+        .status(200)
+        .send({ success: false, message: "이미 가입된 아이디입니다." });
     }
     return res.status(200).send({ success: true });
   })(req, res, next);
 });
-
 
 router.put("/", isLoggendIn, async (req, res) => {
   const { nickname } = req.body;
@@ -53,7 +58,7 @@ router.put("/", isLoggendIn, async (req, res) => {
     return res.status(400).send({
       success: false,
       data: {},
-      message: "server error",
+      message: "server error -> put",
     });
   }
 });
@@ -70,7 +75,7 @@ router.delete("/", isLoggendIn, async (req, res) => {
     return res.status(400).send({
       success: false,
       data: {},
-      message: "server error",
+      message: "server error->DELETE",
     });
   }
 });
@@ -93,6 +98,7 @@ router.post("/login", inNotLoggedIn, async (req, res, next) => {
         }
         return res.status(200).send({
           success: true,
+          message: "로그인 성공 맞는것같은디",
           data: {},
         });
       });
@@ -134,14 +140,6 @@ router.get("/email/auth", async (req, res) => {
   } else {
     return res.send("<div>유효하지 않은 코드입니다.</div>");
   }
-});
-
-router.get("/test", async (req, res) => {
-  return res.status(200).send({
-    success: false,
-    data: {},
-    message: "server error",
-  });
 });
 
 module.exports = router;
