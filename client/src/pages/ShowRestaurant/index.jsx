@@ -31,6 +31,7 @@ const Index = ({}) => {
   const lng = location.state.lat;
   const lat = location.state.lat;
   const gudata = location.state.gudata;
+  const WCode = location.state.WCode;
   const [searchPlace, setSearchPlace] = useState(null);
   const [keyword, Setkeyword] = useState(null);
   const [event1, setEvent1] = useState(null);

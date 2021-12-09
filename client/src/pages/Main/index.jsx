@@ -9,6 +9,7 @@ import dfs_xy_conv from "./components/dfs_xy_conv";
 import CuteButton from "../../components/CuteButton";
 import MiseMun from "./components/MiseMun";
 import { Link, useNavigate } from "react-router-dom";
+import WeatherCode from "./components/WeatherCode";
 const { kakao } = window;
 //import { NaverMap, RenderAfterNavermapsLoaded } from "react-naver-maps";
 //import Coordinate from "./components/Coordinate";
@@ -54,12 +55,13 @@ const Main = () => {
   const [sidodata, setSidodata] = useState(null);
   const [gudata, setGudata] = useState(null);
   const [DetailAddr, setDetailAddr] = useState(null);
+
+  const [misedust, setMisedust] = useState([]);
   function displayCenterInfo(result, status) {
     if (status === daum.maps.services.Status.OK) {
       setDetailAddr(result[1].address_name);
       setSidodata(result[1].region_1depth_name);
       setGudata(result[1].region_3depth_name);
-      console.log(DetailAddr);
     }
   }
 
@@ -76,18 +78,15 @@ const Main = () => {
         }
       );
     }
-    console.log(lat, lng);
   }, []); //처음시작시
   useEffect(() => {
     const rs = dfs_xy_conv("toXY", lat, lng);
     setxData(rs.x);
     setyData(rs.y);
-    console.log("변환후", xdata, ydata);
   }, [lng]);
 
   useEffect(() => {
     kakao.maps.load(() => {
-      console.log(lat, lng);
       const container = document.getElementById("map"),
         options = {
           center: new kakao.maps.LatLng(lat, lng), // 위도, 경도 입력
@@ -115,7 +114,8 @@ const Main = () => {
       //여기
     });
   }, [lng]);
-
+  const [temp, setTemp] = useState(null);
+  const [rain, setRain] = useState(null);
   const [data, setData] = useState(null);
   const serviceKey = process.env.REACT_APP_WEATHER_API_KEY;
   const [numOfRows, setRows] = useState(10);
@@ -137,6 +137,8 @@ const Main = () => {
       });
 
       setData(response.data.response.body.items.item);
+      setRain(response.data.response.body.items.item[0].obsrValue);
+      setTemp(response.data.response.body.items.item[3].obsrValue);
     } catch (e) {
       console.log(e);
     }
@@ -147,6 +149,11 @@ const Main = () => {
   useEffect(() => {
     SetWeather();
   }, [ydata]);
+  const [WCode, setWcode] = useState(null);
+  useEffect(() => {
+    const tmp = WeatherCode(temp, misedust, rain);
+    setWcode(tmp);
+  }, [misedust]);
 
   return (
     <MainWrapper>
@@ -166,13 +173,15 @@ const Main = () => {
               <Weather category={d.category} obsrValue={d.obsrValue} />
             ))}
         </div>
-
         <div>
-          <MiseMun sidodata={sidodata} />
+          <MiseMun sidodata={sidodata} setMisedust={setMisedust} />
         </div>
 
         <div className="non-display-box">
-          <Link to={"/show"} state={{ gudata: gudata, lat: lat, lng: lng }}>
+          <Link
+            to={"/show"}
+            state={{ gudata: gudata, lat: lat, lng: lng, WCode: WCode }}
+          >
             <CuteButton title="추천메뉴"></CuteButton>
           </Link>
         </div>

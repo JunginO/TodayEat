@@ -8,12 +8,13 @@ const StyleBox = styled.div`
   display: flex;
   justify-content: center;
 `;
-const MiseMun = ({ sidodata }) => {
+const MiseMun = ({ sidodata, setMisedust }) => {
   const [btn, setBtn] = useState(null);
   const serviceKey2 = process.env.REACT_APP_Mise_API_KEY;
   const sido = sido_to_si(sidodata);
   const url2 = `/getCtprvnRltmMesureDnsty?numOfRows=1&sidoName=${sido}&serviceKey=${serviceKey2}&ver=1.0&returnType=json`;
   const [mise, setMiseapi] = useState(null);
+
   const SetMise = async () => {
     try {
       const response2 = await axios("api/v2" + url2, {
@@ -27,14 +28,14 @@ const MiseMun = ({ sidodata }) => {
         credentials: "same-origin",
       });
       setMiseapi(response2.data.response.body.items);
-      console.log(mise);
+      setMisedust(response2.data.response.body.items[0].pm10Grade);
     } catch (e) {
       console.log(e);
     }
   };
   useEffect(() => {
     SetMise();
-  }, [btn]);
+  }, [sidodata]);
   return (
     <StyleBox>
       <div className="weather-box">
