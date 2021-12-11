@@ -32,21 +32,27 @@ const Weather = ({ category, obsrValue }) => {
         break;
       case "1":
         rainism = "비";
+        imglink = code01;
         break;
       case "2":
         rainism = "비/눈";
+        imglink = code05;
         break;
       case "3":
         rainism = "눈";
+        imglink = code03;
         break;
       case "5":
         rainism = "빗방울";
+        imglink = code01;
         break;
       case "6":
         rainism = "빗방울눈날림";
+        imglink = code07;
         break;
       case "7":
         rainism = "눈날림";
+        imglink = code07;
         break;
       default:
         rainism = "디폴트";

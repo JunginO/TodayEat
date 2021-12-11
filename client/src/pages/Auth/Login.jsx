@@ -5,32 +5,44 @@ import { AuthContent } from ".";
 import { InputWithLabel } from ".";
 import { RightAlignedLink } from ".";
 import { useState } from "react";
-
 import axios from "axios";
 const Login = () => {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [errortxt, setErrorText] = useState("");
   const onClickLogin = async () => {
+    console.log(userId, password);
     try {
       const result = await axios({
         method: "POST",
-        url: "http://localhost:5000/api/user/login",
+        url: "http://localhost:5000/user/login",
         data: {
           user_id: userId,
           password: password,
         },
       });
-
       if (result.data.success) {
-        window.localStorage.setItem("userId", JSON.stringify(userObj));
-        window.localStorage.setItem("logged-in", JSON.stringify(true));
+        // id, pw 모두 일치 userId = userId1, msg = undefined
+        console.log("======================", "로그인 성공");
+        sessionStorage.setItem("user_id", userId);
         window.location.replace("/");
       } else {
-        setErrorText(result.data.message);
+        if (result.data.userId === null) {
+          // id는 있지만, pw 는 다른 경우 userId = null , msg = undefined
+          console.log(
+            "======================",
+            "입력하신 비밀번호 가 일치하지 않습니다."
+          );
+          if (result.data.userId === undefined) {
+            // id 일치하지 않는 경우 userId = undefined, msg = '입력하신 id 가 일치하지 않습니다.'
+            console.log("======================", result.data.msg);
+            alert("입력하신 id 가 일치하지 않습니다.");
+          }
+          alert("입력하신 비밀번호 가 일치하지 않습니다.");
+        }
       }
     } catch {
-      alert(errortxt);
+      alert("server error");
     }
   };
 
@@ -68,6 +80,8 @@ const Login = () => {
           handleFocus={handleFocus}
           value={password}
         />
+
+        {errortxt && <p className="alert"> {errortxt}</p>}
         <AuthButton onClick={onClickLogin}>로그인</AuthButton>
       </AuthContent>
       <RightAlignedLink to="/auth/register">회원가입</RightAlignedLink>

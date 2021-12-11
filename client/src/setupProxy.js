@@ -1,6 +1,7 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
 module.exports = function (app) {
+  const url = "http://localhost:5000/";
   app.use(
     "/api/v1",
     createProxyMiddleware({
@@ -23,10 +24,14 @@ module.exports = function (app) {
     })
   );
   app.use(
-    "/api",
+    "/api/v3",
     createProxyMiddleware({
-      target: "http://localhost:5000",
+      target: url,
       changeOrigin: true,
+      secure: false,
+      pathRewrite: {
+        "^/api/v3": " ",
+      },
     })
   );
 };

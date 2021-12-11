@@ -1,5 +1,5 @@
 export default function WeatherCode(temp, misedust, rain) {
-  var ans = "4"; //디폴트값
+  var ans = "5"; //디폴트값
   var dust = parseInt(misedust);
   if (dust > 2) {
     ans = 0;

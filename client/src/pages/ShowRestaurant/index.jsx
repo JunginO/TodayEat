@@ -36,6 +36,26 @@ const Index = ({}) => {
   const [keyword, Setkeyword] = useState(null);
   const [event1, setEvent1] = useState(null);
   const [event2, setEvent2] = useState(null);
+
+  const SetFood = async () => {
+    try {
+      const response = await axios("api/v3", {
+        method: "GET",
+        mode: "no-cors",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+        withCredentials: true,
+        credentials: "same-origin",
+        data: {
+          WCode: WCode,
+        },
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
     setSearchPlace(gudata + keyword);
     console.log(searchPlace);

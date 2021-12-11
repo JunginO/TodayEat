@@ -66,14 +66,14 @@ const Register = () => {
     }
     setEmail(value);
   };
-
+  const [errorText, setErrorText] = useState("");
   const onClickSignup = async () => {
     if (errorMail + pwError + pwReError !== 0) {
       alert("회원정보를 제대로 입력해주세요.");
     } else {
       const result = await axios({
         method: "POST",
-        url: "http://localhost:5000/api/user",
+        url: "/api/v3/user",
         data: {
           user_id: userId,
           password: password,
@@ -86,12 +86,10 @@ const Register = () => {
         if (result.data.success) {
           window.location.replace("/auth/login");
         } else {
-          setIsOpen(true);
           setErrorText(result.data.message);
         }
       } else {
         setErrorText("bad reqeust");
-        setIsOpen(true);
       }
     }
   };
@@ -115,6 +113,7 @@ const Register = () => {
             value={userId}
             onChange={onChangeId}
           />
+          {errorText && <p className="alert"> {errorText}</p>}
           <InputWithLabel
             label="비밀번호"
             name="password"
