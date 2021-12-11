@@ -1,12 +1,12 @@
 const passport = require("passport");
-const localStrategy = require("passport-local").Strategy;
+const LocalStrategy = require("passport-local").Strategy;
 const { User } = require("../models/index");
 const bcrypt = require("bcrypt");
 
 module.exports = () => {
   passport.use(
     "local-login",
-    new localStrategy(
+    new LocalStrategy(
       {
         usernameField: "user_id",
         passwordField: "password",
@@ -27,7 +27,7 @@ module.exports = () => {
               done(null, false, { message: "비밀번호 불일치" });
             }
           } else {
-            done(null, flase, { message: "존재하지 않는 사용자입니다." });
+            done(null, false, { message: "존재하지 않는 사용자입니다." });
           }
         } catch (err) {
           console.log(err);
@@ -39,7 +39,7 @@ module.exports = () => {
 
   passport.use(
     "local-join",
-    new localStrategy(
+    new LocalStrategy(
       {
         usernameField: "user_id",
         password: "password",

@@ -177,7 +177,7 @@ const Main = () => {
 
         <div className="non-display-box">
           <Link
-            to={"/show"}
+            to={`/show/${WCode}`}
             state={{ gudata: gudata, lat: lat, lng: lng, WCode: WCode }}
           >
             <CuteButton title="오늘의 랜덤추천메뉴"></CuteButton>

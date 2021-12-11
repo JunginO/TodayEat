@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 const TopWrapper = styled.div`
   .top-back {
     background-color: lightgray;
@@ -51,13 +51,13 @@ const TopWrapper = styled.div`
     &:active {
       background: gray;
     }
+    text-decoration: none;
   }
 `;
 const navigate = useNavigate;
 const logoutevent = (e) => {
-  localStorage.removeItem("key");
   localStorage.clear();
-  navigate("/");
+  window.location.replace("/");
 };
 const index = () => {
   let id = window.localStorage.getItem("userId");
@@ -65,7 +65,7 @@ const index = () => {
     <TopWrapper>
       <div className="top-back">
         <div className="center-box">
-          <h3>{JSON.parse(id)}</h3>
+          <h3>{id}님</h3>
           <div className="button-box">
             <button onClick={logoutevent}>로그아웃</button>
           </div>
@@ -73,7 +73,9 @@ const index = () => {
       </div>
       <div className="menumenu">
         <div className="menu">
-          <div className="menu-box">계정 정보 설정</div>
+          <Link to="/mypage/setting">
+            <div className="menu-box">계정 정보 설정</div>
+          </Link>
           <div className="menu-box">관심 메뉴 설정</div>
         </div>
       </div>

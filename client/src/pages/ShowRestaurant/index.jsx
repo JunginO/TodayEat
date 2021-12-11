@@ -7,6 +7,14 @@ import { COLORS } from "../../components/Colors";
 import SearchWithKeyword from "../Main/components/SearchWithKeyword";
 import { useLocation } from "react-router-dom";
 import CuteButton from "./../../components/CuteButton";
+import {
+  dummyCode5,
+  dummyCode4,
+  dummyCode3,
+  dummyCode2,
+  dummyCode1,
+  dummyCode0,
+} from "../../components/dummyData";
 const { kakao } = window;
 
 const MainWrapper = styled.div`
@@ -37,51 +45,32 @@ const Index = ({}) => {
   const [event1, setEvent1] = useState(null);
   const [event2, setEvent2] = useState(null);
 
-  const SetFood = async () => {
-    try {
-      const response = await axios("api/v3", {
-        method: "GET",
-        mode: "no-cors",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-        withCredentials: true,
-        credentials: "same-origin",
-        data: {
-          WCode: WCode,
-        },
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const tmp1 = dummyCode5[Math.floor(Math.random() * dummyCode5.length)];
 
+  console.log(tmp1);
   useEffect(() => {
     setSearchPlace(gudata + keyword);
-    console.log(searchPlace);
   }, [keyword]);
-  console.log(location);
 
   const handleclick = (e) => {
-    Setkeyword("떡볶이");
-    console.log(searchPlace);
+    Setkeyword(tmp1);
   };
   const handleclick2 = (e) => {
     Setkeyword("마라탕");
-    console.log(searchPlace);
   };
   const handleclick3 = (e) => {
     Setkeyword("짜장면");
-    console.log(searchPlace);
   };
 
   return (
     <MainWrapper>
       <div className="yellow-box">
         <h2>오늘의 추천 메뉴는?</h2>
-        <button onClick={handleclick} className="button-choice">
-          떡볶이
-        </button>
+        {tmp1 && (
+          <button onClick={handleclick} className="button-choice">
+            {tmp1}
+          </button>
+        )}
         <button onClick={handleclick2} className="button-choice">
           마라탕
         </button>

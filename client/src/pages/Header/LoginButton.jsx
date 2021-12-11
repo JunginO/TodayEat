@@ -12,16 +12,13 @@ const BorderedButton = styled(Link)`
 
 const LoginButton = () => {
   let id = window.localStorage.getItem("userId");
-
   const setData = () => {
     window.localStorage.removeItem("userId");
     window.localStorage.removeItem("logged-in");
   };
   return localStorage.getItem("logged-in") ? (
     <div>
-      <BorderedButton to="/mypage">
-        {JSON.parse(id)}님, 환영합니다!
-      </BorderedButton>
+      <BorderedButton to="/mypage">{id}님, 환영합니다!</BorderedButton>
     </div>
   ) : (
     <div>

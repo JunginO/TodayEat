@@ -1,7 +1,5 @@
 const Op = require("sequelize").Op;
-
-const { User, EmailAuth } = require("../models/index");
-
+const { User } = require("../models/index");
 exports.getUser = async (userId) => {
   return await User.findOne({
     attributes: ["user_id", "email", "name", "nickname"],
@@ -28,27 +26,6 @@ exports.deleteUser = async (userId) => {
   return await User.destroy({
     where: {
       id: userId,
-    },
-  });
-};
-
-exports.uploadEmail = async (email, userId) => {
-  return await EmailAuth.create({
-    email: email,
-    code: common.getRandomCode(),
-    user_id: userId,
-    is_auth: false,
-  });
-};
-
-exports.authEmail = async (code) => {
-  return await EmailAuth.findOne({
-    where: {
-      code: code,
-      send_date: {
-        [Op.lte]: new Date(),
-        [Op.gte]: new Date(new Date() - 5 * 60 * 1000),
-      },
     },
   });
 };

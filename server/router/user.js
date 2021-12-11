@@ -3,10 +3,9 @@ const app = express();
 const router = express.Router();
 const passport = require("passport");
 
-const { isLoggendIn, inNotLoggedIn } = require("../middleware");
+const { isLoggedIn, isNotLoggedIn } = require("../middleware");
 const userService = require("../services/user");
-
-router.get("/", async (req, res) => {
+router.get("/login", async (req, res) => {
   if (!req.isAuthenticated()) {
     return res.status(200).send({
       success: false,
@@ -23,20 +22,16 @@ router.get("/", async (req, res) => {
       return res.status(400).send({
         success: false,
         data: {},
-        message: "server error ->get",
+        message: "server error",
       });
     }
   }
 });
 
-router.post("/", inNotLoggedIn, async (req, res, next) => {
+router.post("/", isNotLoggedIn, async (req, res, next) => {
   passport.authenticate("local-join", (err, user) => {
     if (err) {
-      return res.status(400).send({
-        success: false,
-        data: {},
-        message: "server error -> post",
-      });
+      return res.status(400).json(err);
     }
     if (!user) {
       return res
@@ -47,7 +42,7 @@ router.post("/", inNotLoggedIn, async (req, res, next) => {
   })(req, res, next);
 });
 
-router.put("/", isLoggendIn, async (req, res) => {
+router.put("/", isLoggedIn, async (req, res) => {
   const { nickname } = req.body;
 
   const result = await userService.updateUser(req.user.id, nickname);
@@ -58,14 +53,14 @@ router.put("/", isLoggendIn, async (req, res) => {
     return res.status(400).send({
       success: false,
       data: {},
-      message: "server error -> put",
+      message: "server error",
     });
   }
 });
 
-router.delete("/", isLoggendIn, async (req, res) => {
-  const result = await userService.deleteUser(req.user.id);
-
+router.delete("/", async (req, res) => {
+  console.log(req.body.user_id);
+  const result = await userService.deleteUser(req.body.user_id);
   if (result) {
     return res.status(200).send({
       sucess: true,
@@ -75,12 +70,12 @@ router.delete("/", isLoggendIn, async (req, res) => {
     return res.status(400).send({
       success: false,
       data: {},
-      message: "server error->DELETE",
+      message: "server error",
     });
   }
 });
 
-router.post("/login", inNotLoggedIn, async (req, res, next) => {
+router.post("/login", isNotLoggedIn, async (req, res, next) => {
   passport.authenticate("local-login", (err, user) => {
     if (err) {
       return res.status(400).json(err);
@@ -98,7 +93,6 @@ router.post("/login", inNotLoggedIn, async (req, res, next) => {
         }
         return res.status(200).send({
           success: true,
-          message: "로그인 성공 맞는것같은디",
           data: {},
         });
       });
@@ -106,7 +100,7 @@ router.post("/login", inNotLoggedIn, async (req, res, next) => {
   })(req, res, next);
 });
 
-router.get("/logout", isLoggendIn, async (req, res) => {
+router.get("/logout", isLoggedIn, async (req, res) => {
   req.logout();
   req.session.destroy();
   return res.status(200).json({
@@ -114,32 +108,4 @@ router.get("/logout", isLoggendIn, async (req, res) => {
     data: {},
   });
 });
-
-router.post("/email", async (req, res) => {
-  const { email } = req.body;
-
-  const result = userService.uploadEmail(email, req.user.id);
-  if (result) {
-    return res.status(200).send({
-      success: true,
-      data: {},
-    });
-  } else {
-    return res.status(400).send({
-      success: false,
-      data: {},
-    });
-  }
-});
-
-router.get("/email/auth", async (req, res) => {
-  const authCode = req.query.code;
-  const result = await userService.authEmail(authCode);
-  if (result) {
-    return res.send("<div>인증이 완료 되었습니다.</div>");
-  } else {
-    return res.send("<div>유효하지 않은 코드입니다.</div>");
-  }
-});
-
 module.exports = router;

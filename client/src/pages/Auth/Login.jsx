@@ -15,7 +15,7 @@ const Login = () => {
     try {
       const result = await axios({
         method: "POST",
-        url: "http://localhost:5000/user/login",
+        url: "http://localhost:5000/api/user/login",
         data: {
           user_id: userId,
           password: password,
@@ -24,7 +24,8 @@ const Login = () => {
       if (result.data.success) {
         // id, pw 모두 일치 userId = userId1, msg = undefined
         console.log("======================", "로그인 성공");
-        sessionStorage.setItem("user_id", userId);
+        localStorage.setItem("userId", userId);
+        localStorage.setItem("logged-in", "True");
         window.location.replace("/");
       } else {
         if (result.data.userId === null) {
@@ -42,7 +43,7 @@ const Login = () => {
         }
       }
     } catch {
-      alert("server error");
+      console.log("error");
     }
   };
 

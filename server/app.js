@@ -1,25 +1,17 @@
 const express = require("express");
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 const cors = require("cors");
-const corsOptions = {
-  origin: "http://localhost:3000",
-  credentials: true,
-};
 
-const mysql = require("mysql");
-const dbconfig = require("./config/database.js");
-const connection = mysql.createConnection(dbconfig);
-const passportConfig = require("./passport");
-
-app.use(cors(corsOptions));
 const path = require("path");
 const session = require("express-session");
+const MySQLStore = require("express-mysql-session")(session);
 const passport = require("passport");
+const dbconfig = require("./config/database");
 
-const { sequelize } = require("./models");
-const models = require("./models/index.js");
 const router = require("./router/index");
+const { sequelize } = require("./models");
+const passportConfig = require("./passport");
 
 app.use(
   cors({
@@ -41,13 +33,22 @@ const sessionOption = {
   rolling: true,
   secure: true,
   httpOnly: true,
+  saveUninitialized: true,
+  store: new MySQLStore(dbconfig.connection),
 };
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 app.use(session(sessionOption));
 app.use(passport.initialize());
 app.use(passport.session());
 passportConfig();
-models.sequelize
-  .sync()
+
+router.use("/api", router);
+
+sequelize
+  .sync({ alter: true })
   .then(() => {
     console.log("DB 연결 성공");
   })
@@ -55,6 +56,4 @@ models.sequelize
     console.log("연결 실패");
     console.log(err);
   });
-
 app.use(router);
-router.use("/api", router);
