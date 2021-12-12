@@ -4,7 +4,7 @@ import styled from "styled-components";
 import moment from "moment";
 import axios from "axios";
 import { COLORS } from "../../components/Colors";
-import SearchWithKeyword from "../Main/components/SearchWithKeyword";
+import SearchWithKeyword from "./components/SearchWithKeyword";
 import { useLocation, Link } from "react-router-dom";
 import CuteButton from "./../../components/CuteButton";
 
@@ -70,6 +70,8 @@ const Index = ({}) => {
     };
     fooddata();
   }, []);
+
+  let logged = window.localStorage.getItem("logged-in");
   return (
     <MainWrapper>
       <div className="yellow-box">
@@ -127,9 +129,15 @@ const Index = ({}) => {
           </div>
         )}
       </div>
-      {keyword && (
-        <Link to={"/diary"} state={{ keyword: keyword }}>
-          <CuteButton title="결과기록"></CuteButton>
+      {logged ? (
+        keyword && (
+          <Link to={"/diary"} state={{ keyword: keyword }}>
+            <CuteButton title="결과기록"></CuteButton>
+          </Link>
+        )
+      ) : (
+        <Link to={"/"}>
+          <CuteButton title="다시시작!"></CuteButton>
         </Link>
       )}
     </MainWrapper>

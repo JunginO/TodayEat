@@ -21,6 +21,24 @@ router.get("/:id", async (req, res) => {
     });
   }
 });
+
+router.delete("/delete/:id", async (req, res) => {
+  const id = req.params.id;
+
+  const result = await diaryService.deleteDiary(id);
+  if (result) {
+    return res.status(200).send({
+      sucess: true,
+      data: {},
+    });
+  } else {
+    return res.status(400).send({
+      success: false,
+      data: {},
+      message: "server error",
+    });
+  }
+});
 /*
 router.post("/", async (req, res) => {
   const { category_id, title, content, is_secret } = req.body;

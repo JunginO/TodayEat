@@ -4,7 +4,7 @@ const { Diary, sequelize } = require("../models");
 
 exports.getDiary = async (userId) => {
   return await Diary.findAll({
-    attributes: ["title", "content"],
+    attributes: ["id", "title", "content"],
     where: {
       user_id: userId,
     },
@@ -19,10 +19,10 @@ exports.createDiary = async (userId, title, content) => {
     title: title,
   });
 };
-exports.deleteDiary = async (num) => {
+exports.deleteDiary = async (id) => {
   return await Diary.destroy({
     where: {
-      id: num,
+      id: id,
     },
   });
 };

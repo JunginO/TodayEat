@@ -11,19 +11,6 @@ exports.getUser = async (userId) => {
   });
 };
 
-exports.updateUser = async (userId, nickname) => {
-  return await User.update(
-    {
-      nickname,
-    },
-    {
-      where: {
-        id: userId,
-      },
-    }
-  );
-};
-
 exports.deleteUser = async (userId) => {
   return await User.destroy({
     where: {

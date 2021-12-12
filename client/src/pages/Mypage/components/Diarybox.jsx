@@ -30,6 +30,7 @@ const Diarybox = () => {
       });
       if (result) {
         setData(result.data.data);
+        console.log(result.data);
       } else {
         alert("Server Error");
       }

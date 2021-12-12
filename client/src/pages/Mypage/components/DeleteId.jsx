@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-const NickChangeWrapper = styled.div`
+const DeleteidWrapper = styled.div`
   width: 100%;
   padding-top: 55px;
   padding-bottom: 48px;
@@ -24,7 +24,7 @@ const NickChangeWrapper = styled.div`
   }
 `;
 
-const NickChange = () => {
+const DeleteId = () => {
   const [nick, setNickname] = useState("");
   let userId = window.localStorage.getItem("userId");
 
@@ -52,4 +52,4 @@ const NickChange = () => {
   );
 };
 
-export default NickChange;
+export default DeleteId;
