@@ -8,6 +8,7 @@ exports.getDiary = async (userId) => {
     where: {
       user_id: userId,
     },
+    order: [["created_at", "DESC"]],
   });
 };
 

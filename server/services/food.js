@@ -16,12 +16,20 @@ exports.getSelectedFood = async (category) => {
     where: {
       category: category,
     },
+    order: [["createdAt", "DESC"]],
   });
 };
 
-exports.createNewFood = async (food, content) => {
-  return await Diary.create({
+exports.createNewFood = async (food, category) => {
+  return await Food.create({
     food_name: food,
-    content: content,
+    category: category,
+  });
+};
+exports.deleteFood = async (food) => {
+  return await Food.destroy({
+    where: {
+      food_name: food,
+    },
   });
 };

@@ -19,6 +19,13 @@ const MainWrapper = styled.div`
     padding: 20px;
     width: 500px;
   }
+  .just-box {
+    text-align: center;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 20px;
+    width: 500px;
+  }
 `;
 const SelectedFood = () => {
   const [cate, setCate] = useState(null);
@@ -26,18 +33,22 @@ const SelectedFood = () => {
   const [keyword, Setkeyword] = useState("");
   const [food, setFood] = useState("");
   const handleChange = (e) => {
-    setFood(JSON.parse(e.target.value));
+    setFood(e.target.value);
   };
+  console.log(food);
   const onClickPost = async () => {
     const result2 = await axios({
       method: "POST",
-      url: `http://localhost:5000/api/diary/food/add/${food}`,
+      url: `http://localhost:5000/api/food/add`,
       data: {
         category: cate,
+        food_name: food,
       },
     });
     if (result2) {
       console.log(result2);
+      alert("음식등록!");
+      window.location.replace("/food");
     } else {
       alert("Server Error");
     }
@@ -120,10 +131,9 @@ const SelectedFood = () => {
             디저트류
           </button>
         </div>
-        <div>
+        <div className="yellow-box">
           <input
             className="inputform"
-            type="text"
             value={food}
             onChange={handleChange}
             placeholder={"데이터 등록!"}
@@ -132,12 +142,14 @@ const SelectedFood = () => {
             등록
           </button>
         </div>
-        {data &&
-          data.map((data) => (
-            <div>
-              <SelectedFoodbox data={data} />
-            </div>
-          ))}
+        <div className="just-box ">
+          {data &&
+            data.map((data) => (
+              <div>
+                <SelectedFoodbox data={data} />
+              </div>
+            ))}
+        </div>
       </div>
     </MainWrapper>
   );
