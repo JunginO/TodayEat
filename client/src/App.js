@@ -8,6 +8,8 @@ import HeaderContainer from "./pages/Header/HeaderContainer";
 import ShowRestaurant from "./pages/ShowRestaurant";
 import Mypage from "./pages/Mypage";
 import NickChange from "./pages/Mypage/components/NickChange";
+import Diary from "./pages/Diary";
+import SelectedFood from "./pages/Mypage/components/SelectedFood";
 const App = () => {
   return (
     <BrowserRouter>
@@ -19,6 +21,8 @@ const App = () => {
         <Route exact path="/show/:WCode" element={<ShowRestaurant />} />
         <Route exact path="/mypage" element={<Mypage />} />
         <Route exact path="/mypage/setting" element={<NickChange />} />
+        <Route exact path="/diary" element={<Diary />} />
+        <Route exact path="/food" element={<SelectedFood />} />
       </Routes>
     </BrowserRouter>
   );

@@ -58,9 +58,9 @@ router.put("/", isLoggedIn, async (req, res) => {
   }
 });
 
-router.delete("/", async (req, res) => {
-  console.log(req.body.user_id);
-  const result = await userService.deleteUser(req.body.user_id);
+router.delete("/:id", async (req, res) => {
+  const userid = req.params.id;
+  const result = await userService.deleteUser(userid);
   if (result) {
     return res.status(200).send({
       sucess: true,

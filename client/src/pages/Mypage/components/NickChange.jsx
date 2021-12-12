@@ -27,13 +27,11 @@ const NickChangeWrapper = styled.div`
 const NickChange = () => {
   const [nick, setNickname] = useState("");
   let userId = window.localStorage.getItem("userId");
-  const onChangeNickname = (e) => {
-    setNickname(e.target.value);
-  };
+
   const onClickDel = async () => {
     const result = await axios({
       method: "DELETE",
-      url: "http://localhost:5000/api/user",
+      url: `http://localhost:5000/api/user/${userId}`,
       data: {
         user_id: userId,
       },

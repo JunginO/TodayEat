@@ -24,6 +24,7 @@ const Login = () => {
       if (result.data.success) {
         // id, pw 모두 일치 userId = userId1, msg = undefined
         console.log("======================", "로그인 성공");
+
         localStorage.setItem("userId", userId);
         localStorage.setItem("logged-in", "True");
         window.location.replace("/");

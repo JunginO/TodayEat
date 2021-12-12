@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate, Link } from "react-router-dom";
+import Diarybox from "./components/Diarybox";
 const TopWrapper = styled.div`
   .top-back {
     background-color: lightgray;
@@ -76,8 +77,11 @@ const index = () => {
           <Link to="/mypage/setting">
             <div className="menu-box">계정 정보 설정</div>
           </Link>
-          <div className="menu-box">관심 메뉴 설정</div>
+          <Link to="/food">
+            <div className="menu-box">관심 메뉴 설정</div>
+          </Link>
         </div>
+        <Diarybox />
       </div>
     </TopWrapper>
   );

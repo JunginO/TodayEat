@@ -5,16 +5,9 @@ import moment from "moment";
 import axios from "axios";
 import { COLORS } from "../../components/Colors";
 import SearchWithKeyword from "../Main/components/SearchWithKeyword";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import CuteButton from "./../../components/CuteButton";
-import {
-  dummyCode5,
-  dummyCode4,
-  dummyCode3,
-  dummyCode2,
-  dummyCode1,
-  dummyCode0,
-} from "../../components/dummyData";
+
 const { kakao } = window;
 
 const MainWrapper = styled.div`
@@ -23,7 +16,9 @@ const MainWrapper = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  .results {
+  .button-choice {
+    margin: 5px;
+    height: 30px;
   }
   .yellow-box {
     text-align: center;
@@ -40,43 +35,85 @@ const Index = ({}) => {
   const lat = location.state.lat;
   const gudata = location.state.gudata;
   const WCode = location.state.WCode;
-  const [searchPlace, setSearchPlace] = useState(null);
-  const [keyword, Setkeyword] = useState(null);
-  const [event1, setEvent1] = useState(null);
-  const [event2, setEvent2] = useState(null);
+  const [searchPlace, setSearchPlace] = useState("");
+  const [keyword, Setkeyword] = useState("");
 
-  const tmp1 = dummyCode5[Math.floor(Math.random() * dummyCode5.length)];
-
-  console.log(tmp1);
+  let selected = "";
   useEffect(() => {
-    setSearchPlace(gudata + keyword);
+    setSearchPlace(gudata + " " + keyword);
   }, [keyword]);
 
-  const handleclick = (e) => {
-    Setkeyword(tmp1);
+  const handleclick = (params, e) => {
+    Setkeyword(params);
   };
-  const handleclick2 = (e) => {
-    Setkeyword("마라탕");
-  };
-  const handleclick3 = (e) => {
-    Setkeyword("짜장면");
-  };
-
+  const [word1, setWord1] = useState("");
+  const [word2, setWord2] = useState("");
+  const [word3, setWord3] = useState("");
+  const [word4, setWord4] = useState("");
+  useEffect(() => {
+    const fooddata = async () => {
+      const result = await axios({
+        method: "get",
+        url: `http://localhost:5000/api/food/random/${WCode}`,
+        data: {
+          is_weather: WCode,
+        },
+      });
+      if (result) {
+        setWord1(result.data.data[0].food_name);
+        setWord2(result.data.data[1].food_name);
+        setWord3(result.data.data[2].food_name);
+        setWord4(result.data.data[3].food_name);
+      } else {
+        alert("Server Error");
+      }
+    };
+    fooddata();
+  }, []);
   return (
     <MainWrapper>
       <div className="yellow-box">
         <h2>오늘의 추천 메뉴는?</h2>
-        {tmp1 && (
-          <button onClick={handleclick} className="button-choice">
-            {tmp1}
+        {word1 && (
+          <button
+            onClick={(e) => {
+              handleclick(word1, e);
+            }}
+            className="button-choice"
+          >
+            {word1}
           </button>
         )}
-        <button onClick={handleclick2} className="button-choice">
-          마라탕
-        </button>
-        <button onClick={handleclick3} className="button-choice">
-          짜장면
-        </button>
+        {word2 && (
+          <button
+            onClick={(e) => {
+              handleclick(word2, e);
+            }}
+            className="button-choice"
+          >
+            {word2}
+          </button>
+        )}
+        {word3 && (
+          <button
+            onClick={(e) => {
+              handleclick(word3, e);
+            }}
+            className="button-choice"
+          >
+            {word3}
+          </button>
+        )}
+        {word4 && (
+          <button
+            onClick={(e) => {
+              handleclick(word4, e);
+            }}
+            className="button-choice"
+          >
+            {word4}
+          </button>
+        )}
       </div>
       <div className="yellow-box">
         {searchPlace && (
@@ -90,7 +127,11 @@ const Index = ({}) => {
           </div>
         )}
       </div>
-      <CuteButton title="결과 기록"></CuteButton>
+      {keyword && (
+        <Link to={"/diary"} state={{ keyword: keyword }}>
+          <CuteButton title="결과기록"></CuteButton>
+        </Link>
+      )}
     </MainWrapper>
   );
 };

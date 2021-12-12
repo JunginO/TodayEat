@@ -46,7 +46,10 @@ db.Sequelize = Sequelize;
 db.User = require("./User")(sequelize, Sequelize);
 db.Food = require("./Food")(sequelize, Sequelize);
 db.Cart = require("./Cart")(sequelize, Sequelize);
+
+db.Diary = require("./Diary")(sequelize, Sequelize);
 /*
+db.Diary.belongsTo(db.User, { foreignKey: "id" });
 db.Cart.belongsTo(db.User, { foreignKey: "user_id" });
 db.Cart.belongsTo(db.Food, { foreignKey: "category" });
 db.Cart.belongsTo(db.Food, { foreignKey: "food_name" });
