@@ -124,28 +124,28 @@ const MapContainer = ({ searchPlace, lat, lng }) => {
         }}
       ></div>
       <div id="large-box">
-        {Places.map((item, i) => (
-          <div className="medium-box" key={i} style={{ marginTop: "20px" }}>
-            <span className="num">{i + 1}</span>
-            <div className="small-box">
-              <div>
-                <a href={"https://map.kakao.com/link/map/" + item.id}>
-                  {item.place_name}
-                </a>
-              </div>
-              {item.road_address_name ? (
+        {searchPlace &&
+          Places.map((item, i) => (
+            <div className="medium-box" key={i} style={{ marginTop: "20px" }}>
+              <span className="num">{i + 1}</span>
+              <div className="small-box">
                 <div>
-                  <span>{item.road_address_name}</span>
-                  <span>{item.address_name}</span>
+                  <a href={"https://map.kakao.com/link/map/" + item.id}>
+                    {item.place_name}
+                  </a>
                 </div>
-              ) : (
-                <span>{item.address_name}</span>
-              )}
-              <span>{item.phone}</span>
+                {item.road_address_name ? (
+                  <div>
+                    <span>{item.road_address_name}</span>
+                    <span>{item.address_name}</span>
+                  </div>
+                ) : (
+                  <span>{item.address_name}</span>
+                )}
+                <span>{item.phone}</span>
+              </div>
             </div>
-          </div>
-        ))}
-
+          ))}
         <div id="pagination" className="hide"></div>
       </div>
     </List>

@@ -44,11 +44,11 @@ const DeleteId = () => {
     }
   };
   return (
-    <NickChangeWrapper>
+    <DeleteidWrapper>
       <button onClick={onClickDel} className="button">
         회원탈퇴
       </button>
-    </NickChangeWrapper>
+    </DeleteidWrapper>
   );
 };
 

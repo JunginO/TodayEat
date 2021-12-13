@@ -75,10 +75,10 @@ const index = () => {
       <div className="menumenu">
         <div className="menu">
           <Link to="/mypage/setting">
-            <div className="menu-box">계정 정보 설정</div>
+            <div className="menu-box">계정 설정</div>
           </Link>
           <Link to="/food">
-            <div className="menu-box">관심 메뉴 설정</div>
+            <div className="menu-box">메뉴 설정</div>
           </Link>
         </div>
         <Diarybox />
